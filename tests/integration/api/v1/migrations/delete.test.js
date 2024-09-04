@@ -1,7 +1,7 @@
 test("DELETE to /api/v1/migrations should return status code 405", async () => {
   const migrationsResponse = await fetch(
     "http://localhost:3000/api/v1/migrations",
-    { method: "DELETE" }
+    { method: "DELETE" },
   );
   expect(migrationsResponse.status).toBe(405);
 
