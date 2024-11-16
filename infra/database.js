@@ -1,9 +1,5 @@
 import { Client } from "pg";
 
-async function clearDatabase() {
-  await query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
-}
-
 async function query(queryObject) {
   let client;
   try {
@@ -45,7 +41,6 @@ async function getNewClient() {
 const database = {
   query,
   getNewClient,
-  clearDatabase,
 };
 
 export default database;
