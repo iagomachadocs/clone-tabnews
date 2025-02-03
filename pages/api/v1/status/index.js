@@ -1,4 +1,5 @@
 import database from "infra/database.js";
+import { InternalServerError } from "infra/errors";
 
 async function databaseVersion() {
   const result = await database.query("SHOW server_version;");
@@ -23,21 +24,30 @@ async function databaseActiveConnections() {
 }
 
 async function status(request, response) {
-  const updatedAt = new Date().toISOString();
-  const version = await databaseVersion();
-  const maxConnections = await databaseMaxConnections();
-  const activeConnections = await databaseActiveConnections();
+  try {
+    const updatedAt = new Date().toISOString();
+    const version = await databaseVersion();
+    const maxConnections = await databaseMaxConnections();
+    const activeConnections = await databaseActiveConnections();
 
-  response.json({
-    updated_at: updatedAt,
-    dependencies: {
-      database: {
-        version: version,
-        max_connections: maxConnections,
-        active_connections: activeConnections,
+    response.json({
+      updated_at: updatedAt,
+      dependencies: {
+        database: {
+          version: version,
+          max_connections: maxConnections,
+          active_connections: activeConnections,
+        },
       },
-    },
-  });
+    });
+  } catch (error) {
+    const publicErrorObject = new InternalServerError({ cause: error });
+
+    console.log("\n Erro dentro do catch do controller:");
+    console.error(publicErrorObject);
+
+    response.status(500).json(publicErrorObject);
+  }
 }
 
 export default status;
