@@ -7,6 +7,16 @@ describe("DELETE /api/v1/migrations", () => {
       );
       expect(migrationsResponse.status).toBe(405);
 
+      const migrationsResponseBody = await migrationsResponse.json();
+
+      expect(migrationsResponseBody).toEqual({
+        name: "MethodNotAllowedError",
+        message: "Método não permitido para este endpoint.",
+        action:
+          "Verifique se o método HTTP enviado é valido para este endpoint",
+        status_code: 405,
+      });
+
       const statusResponse = await fetch("http://localhost:3000/api/v1/status");
       const statusBody = await statusResponse.json();
 
