@@ -51,7 +51,7 @@ async function runPendingMigrations() {
     });
     throw serviceErrorObject;
   } finally {
-    dbClient.end();
+    dbClient?.end();
   }
 }
 
