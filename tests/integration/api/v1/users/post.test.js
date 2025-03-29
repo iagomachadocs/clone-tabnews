@@ -1,7 +1,5 @@
 import { version as uuidVersion } from "uuid";
 import orchestrator from "tests/orchestrator.js";
-import status from "pages/api/v1/status";
-import { STATIC_STATUS_PAGES } from "next/dist/shared/lib/constants";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
